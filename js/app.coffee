@@ -26,7 +26,6 @@ Manifold =
         [_.random(@cols), _.random(@rows)]
 
     moves = _.times(10, game.randomPosition)
-    console.log "Moves:", moves
     _.each moves, (p) -> game.nextState p[0], p[1]
     game.moves = 0
     game.updates = []
@@ -70,18 +69,24 @@ update = (game, container) ->
     .attr(class: "state-#{state}")
 
   if score == total
-    localStorage.best = game.moves
+    localStorage.best = Math.min(localStorage.best, game.moves)
     alert "You won! Reload the page for another game."
     game.complete = true
 
   $("#moves").html game.moves
 
-  $("#best").html localStorage.best or "&infin;"
-  
+  $("#best").html(
+    if _.isFinite(localStorage.best)
+      localStorage.best
+    else
+      "&infin;"
+  )
 
 $(document).ready ->
   game = Manifold.create()
   container = $("#boardview")
+
+  localStorage.best or= Infinity
 
   render game, container
 
