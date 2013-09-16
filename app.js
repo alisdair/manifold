@@ -42,7 +42,6 @@
         }
       };
       moves = _.times(10, game.randomPosition);
-      console.log("Moves:", moves);
       _.each(moves, function(p) {
         return game.nextState(p[0], p[1]);
       });
@@ -95,18 +94,19 @@
       "class": "state-" + state
     });
     if (score === total) {
-      localStorage.best = game.moves;
+      localStorage.best = Math.min(localStorage.best, game.moves);
       alert("You won! Reload the page for another game.");
       game.complete = true;
     }
     $("#moves").html(game.moves);
-    return $("#best").html(localStorage.best || "&infin;");
+    return $("#best").html(_.isFinite(localStorage.best) ? localStorage.best : "&infin;");
   };
 
   $(document).ready(function() {
     var container, game, step;
     game = Manifold.create();
     container = $("#boardview");
+    localStorage.best || (localStorage.best = Infinity);
     render(game, container);
     return (step = function() {
       update(game, container);
