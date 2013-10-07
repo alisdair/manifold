@@ -15,11 +15,15 @@ Manifold =
       complete: false
       nextState: (x, y) ->
         @moves += 1
-        _.each [[0,0], [0,1], [1,0], [0,-1], [-1,0]], (offset) =>
-          ox = (x + offset[0] + @cols) % @cols
-          oy = (y + offset[1] + @rows) % @rows
-          @board[oy][ox] = (@board[oy][ox] + 1) % @states
-          @updates.push [ox, oy, @board[oy][ox]]
+        @board[y][x] = (@board[y][x] + 1) % @states
+        @updates.push [x, y, @board[y][x]]
+        _.each [[0,1], [1,0], [0,-1], [-1,0]], (offset, i) =>
+          window.setTimeout =>
+            ox = (x + offset[0] + @cols) % @cols
+            oy = (y + offset[1] + @rows) % @rows
+            @board[oy][ox] = (@board[oy][ox] + 1) % @states
+            @updates.push [ox, oy, @board[oy][ox]]
+          , 66 * (i + 1)
       bestScore: ->
         _.max(_.pairs(_.countBy(_.flatten(@board))), (x) -> x[1])
       randomPosition: ->
