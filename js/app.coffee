@@ -2,7 +2,7 @@ Manifold =
   create: ->
     w = 4
     h = 6
-    s = 3
+    s = 2
     color = _.random(s-1)
     row = -> _.times(w, -> color)
     game =
