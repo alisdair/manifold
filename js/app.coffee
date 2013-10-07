@@ -1,7 +1,7 @@
 Manifold =
   create: ->
     w = 4
-    h = 6
+    h = 5
     s = 2
     color = _.random(s-1)
     row = -> _.times(w, -> color)
